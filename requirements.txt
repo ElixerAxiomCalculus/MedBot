@@ -4,4 +4,8 @@ python-dotenv
 pydantic
 httpx
 pymongo
+requests
+beautifulsoup4
+aiofiles
+
 
