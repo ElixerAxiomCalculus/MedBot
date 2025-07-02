@@ -85,7 +85,7 @@ class _RootMedBotState extends State<RootMedBot> {
             expanded: expanded,
             onTap: (i) => setState(() => idx = i),
             onMenu: toggleSidebar,
-            onHome: returnToLanding, // <--- FIX: Add this line!
+            onHome: returnToLanding, 
           ),
           Expanded(child: pages[idx]),
         ],
