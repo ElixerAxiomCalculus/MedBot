@@ -1,5 +1,7 @@
-fastapi
+fastapi[all]
 uvicorn[standard]
 python-dotenv
 pydantic
 httpx
+pymongo
+
