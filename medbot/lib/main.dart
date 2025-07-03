@@ -7,17 +7,20 @@ import 'pages/improve_page.dart';
 import 'pages/settings_page.dart';
 import 'widgets/sidebar.dart';
 import 'pages/landing_page.dart';
+import 'widgets/preloader.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThmPrvdr(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final thm = Provider.of<ThmPrvdr>(context);
@@ -35,12 +38,39 @@ class MyApp extends StatelessWidget {
           titleTextStyle: thm.hdFnt,
         ),
       ),
-      home: RootMedBot(),
+      home: const SplashToMedBot(),
     );
   }
 }
 
+class SplashToMedBot extends StatefulWidget {
+  const SplashToMedBot({super.key});
+
+  @override
+  State<SplashToMedBot> createState() => _SplashToMedBotState();
+}
+
+class _SplashToMedBotState extends State<SplashToMedBot> {
+  bool showRoot = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 1400), () {
+      if (mounted) setState(() => showRoot = true);
+    });
+  }
+
+  @override
+Widget build(BuildContext context) {
+  return showRoot ? RootMedBot() : PreloaderWidget();
+}
+
+}
+
 class RootMedBot extends StatefulWidget {
+  const RootMedBot({super.key});
+
   @override
   State<RootMedBot> createState() => _RootMedBotState();
 }
@@ -85,7 +115,7 @@ class _RootMedBotState extends State<RootMedBot> {
             expanded: expanded,
             onTap: (i) => setState(() => idx = i),
             onMenu: toggleSidebar,
-            onHome: returnToLanding, // <--- FIX: Add this line!
+            onHome: returnToLanding,
           ),
           Expanded(child: pages[idx]),
         ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PreloaderWidget extends StatelessWidget {
+  const PreloaderWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(

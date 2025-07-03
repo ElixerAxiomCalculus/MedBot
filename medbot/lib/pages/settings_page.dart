@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 
 class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final thm = Provider.of<ThmPrvdr>(context);

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class LandingPage extends StatefulWidget {
   final VoidCallback? onStartChat;
-  const LandingPage({Key? key, this.onStartChat}) : super(key: key);
+  const LandingPage({super.key, this.onStartChat});
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -13,6 +13,7 @@ class _LandingPageState extends State<LandingPage> with TickerProviderStateMixin
   final scrollCtrl = ScrollController();
   final chatScrollCtrl = ScrollController();
   int chatIdx = 0;
+
   List<Map<String, String>> demoMsgs = [
     {"u": "me", "m": "What are the symptoms of malaria?"},
     {"u": "bot", "m": "Malaria symptoms include fever, chills, headache, muscle pain, and fatigue."},
@@ -29,7 +30,6 @@ class _LandingPageState extends State<LandingPage> with TickerProviderStateMixin
   }
 
   void animateChat() async {
-    
     while (mounted) {
       await Future.delayed(const Duration(seconds: 2));
       if (!mounted) return;
@@ -51,6 +51,10 @@ class _LandingPageState extends State<LandingPage> with TickerProviderStateMixin
     scrollCtrl.dispose();
     chatScrollCtrl.dispose();
     super.dispose();
+  }
+
+  void openDrawer() {
+    Scaffold.of(context).openEndDrawer();
   }
 
   Widget buildChatDemo(BuildContext context, bool dark) {
@@ -374,9 +378,142 @@ class _LandingPageState extends State<LandingPage> with TickerProviderStateMixin
     );
   }
 
+  void _scrollToFeatures() {
+    scrollCtrl.animateTo(
+      560,
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  void _scrollToHowItWorks() {
+    scrollCtrl.animateTo(
+      1160,
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  Widget _buildNavBar(bool isMobile) {
+    if (isMobile) {
+      return Builder(
+        builder: (context) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.medical_services_rounded, color: Colors.red, size: 34),
+                const SizedBox(width: 12),
+                Text("MedBot",
+                    style: GoogleFonts.lexend(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 28,
+                        color: Colors.redAccent)),
+              ],
+            ),
+            IconButton(
+              icon: Icon(Icons.menu, size: 32, color: Colors.redAccent),
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              tooltip: "Menu",
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.medical_services_rounded, color: Colors.red, size: 34),
+              const SizedBox(width: 12),
+              Text("MedBot",
+                  style: GoogleFonts.lexend(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 28,
+                      color: Colors.redAccent)),
+            ],
+          ),
+          Row(
+            children: [
+              TextButton(
+                  onPressed: _scrollToFeatures,
+                  child: Text("Features",
+                      style: GoogleFonts.lexend(
+                          fontSize: 17,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w500))),
+              const SizedBox(width: 15),
+              TextButton(
+                  onPressed: _scrollToHowItWorks,
+                  child: Text("How It Works",
+                      style: GoogleFonts.lexend(
+                          fontSize: 17,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w500))),
+              const SizedBox(width: 15),
+              ElevatedButton(
+                onPressed: widget.onStartChat,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 18, horizontal: 40),
+                ),
+                child: Text("Try MedBot Now",
+                    style: GoogleFonts.lexend(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19,
+                        color: Colors.white)),
+              ),
+            ],
+          )
+        ],
+      );
+    }
+  }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          children: [
+            ListTile(
+              leading: Icon(Icons.star, color: Colors.redAccent),
+              title: Text("Features", style: GoogleFonts.lexend(fontSize: 18)),
+              onTap: () {
+                Navigator.pop(context);
+                _scrollToFeatures();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.workspaces, color: Colors.teal),
+              title: Text("How It Works", style: GoogleFonts.lexend(fontSize: 18)),
+              onTap: () {
+                Navigator.pop(context);
+                _scrollToHowItWorks();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.chat_bubble_outline, color: Colors.redAccent),
+              title: Text("Try MedBot Now", style: GoogleFonts.lexend(fontSize: 18)),
+              onTap: () {
+                Navigator.pop(context);
+                widget.onStartChat?.call();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isMobile = MediaQuery.of(context).size.width < 750;
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -387,74 +524,15 @@ class _LandingPageState extends State<LandingPage> with TickerProviderStateMixin
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        endDrawer: isMobile ? _buildDrawer() : null,
         body: Column(
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 22),
+              padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 18 : 44, vertical: 22),
               color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.medical_services_rounded,
-                          color: Colors.red, size: 34),
-                      const SizedBox(width: 12),
-                      Text("MedBot",
-                          style: GoogleFonts.lexend(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 28,
-                              color: Colors.redAccent)),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            scrollCtrl.animateTo(
-                              560,
-                              duration: const Duration(milliseconds: 700),
-                              curve: Curves.easeInOutCubic,
-                            );
-                          },
-                          child: Text("Features",
-                              style: GoogleFonts.lexend(
-                                  fontSize: 17,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w500))),
-                      const SizedBox(width: 15),
-                      TextButton(
-                          onPressed: () {
-                            scrollCtrl.animateTo(
-                              1160,
-                              duration: const Duration(milliseconds: 700),
-                              curve: Curves.easeInOutCubic,
-                            );
-                          },
-                          child: Text("How It Works",
-                              style: GoogleFonts.lexend(
-                                  fontSize: 17,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w500))),
-                      const SizedBox(width: 15),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent,
-                            shape: const StadiumBorder(),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 28),
-                          ),
-                          onPressed: widget.onStartChat,
-                          child: Text("Try the Chatbot",
-                              style: GoogleFonts.lexend(
-                                  fontSize: 17,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600))),
-                    ],
-                  )
-                ],
-              ),
+              child: _buildNavBar(isMobile),
             ),
             Expanded(
               child: SingleChildScrollView(

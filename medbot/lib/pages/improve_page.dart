@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import '../theme_provider.dart';
 
 class ImprovePage extends StatefulWidget {
+  const ImprovePage({super.key});
+
   @override
   State<ImprovePage> createState() => _ImprovePageState();
 }

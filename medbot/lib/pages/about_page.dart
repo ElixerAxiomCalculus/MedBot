@@ -45,9 +45,12 @@ _Powered by GenAI • RAG Search • MongoDB_
 </center>
 """;
 
+  const AboutPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final thm = Provider.of<ThmPrvdr>(context);
+    final dark = thm.dark;
 
     return Scaffold(
       backgroundColor: thm.bg(),
@@ -57,29 +60,42 @@ _Powered by GenAI • RAG Search • MongoDB_
           margin: const EdgeInsets.symmetric(vertical: 44, horizontal: 20),
           padding: const EdgeInsets.all(36),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: dark ? const Color(0xFF16181C) : Colors.white,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.06),
-                blurRadius: 26,
-                offset: const Offset(0, 8),
-              ),
+              if (!dark)
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
+                ),
             ],
-            border: Border.all(color: Colors.black12, width: 1.1),
+            border: Border.all(
+              color: dark ? Colors.white10 : Colors.black12,
+              width: 1.1,
+            ),
           ),
           child: Markdown(
             data: doc,
             styleSheet: MarkdownStyleSheet(
-              h1: thm.mHeading,
-              h2: thm.mSubheading,
-              p: thm.mPara,
-              listBullet: thm.mList.copyWith(fontWeight: FontWeight.bold),
-              code: thm.mList.copyWith(fontFamily: 'monospace', color: thm.pri),
+              h1: thm.mHeading.copyWith(
+                  color: dark ? Colors.red[100] : thm.mHeading.color),
+              h2: thm.mSubheading.copyWith(
+                  color: dark ? Colors.red[200] : thm.mSubheading.color),
+              p: thm.mPara.copyWith(
+                  color: dark ? Colors.white.withOpacity(0.94) : thm.mPara.color),
+              listBullet: thm.mList.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: dark ? Colors.red[100] : thm.mList.color),
+              code: thm.mList.copyWith(
+                  fontFamily: 'monospace',
+                  color: dark ? Colors.red[200] : thm.pri),
+              blockquote: thm.mPara.copyWith(
+                  color: dark ? Colors.cyan[100] : Colors.cyan[900]),
               horizontalRuleDecoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: Colors.grey[300]!,
+                    color: dark ? Colors.white10 : Colors.grey[300]!,
                     width: 1.5,
                   ),
                 ),
