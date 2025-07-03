@@ -7,7 +7,7 @@ import 'pages/improve_page.dart';
 import 'pages/settings_page.dart';
 import 'widgets/sidebar.dart';
 import 'pages/landing_page.dart';
-import 'widgets/preloader.dart';
+import 'widgets/Preloader.dart';
 
 void main() {
   runApp(
