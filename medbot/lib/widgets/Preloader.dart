@@ -6,7 +6,7 @@ class PreloaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white, // Or your brand background
+      color: Colors.white, 
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
