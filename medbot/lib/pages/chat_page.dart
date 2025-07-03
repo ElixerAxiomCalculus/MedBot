@@ -58,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
     final history = msgs.map((m) => {"u": m["u"], "m": m["m"]}).toList();
 
     final r = await http.post(
-      Uri.parse('http://localhost:8000/chat/gemini'),
+      Uri.parse('https://medbot-hrkk.onrender.com/chat/gemini'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({"q": q, "history": history}),
     );
