@@ -176,13 +176,31 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           SizedBox(height: 22),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.medical_services_rounded, color: thm.pri, size: 30),
-              SizedBox(width: 8),
-              Text("MedBot", style: thm.hdFnt),
-            ],
-          ),
+  mainAxisAlignment: MainAxisAlignment.center,
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    Icon(Icons.medical_services_rounded, color: thm.pri, size: 30),
+    SizedBox(width: 8),
+    Text("MedBot", style: thm.hdFnt),
+    SizedBox(width: 8),
+    Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.orange.shade700 : Colors.orange.shade200,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        "BETA",
+        style: TextStyle(
+          color: isDark ? Colors.white : Colors.orange.shade900,
+          fontWeight: FontWeight.bold,
+          fontSize: 13,
+          letterSpacing: 1,
+        ),
+      ),
+    ),
+  ],
+),
           SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
